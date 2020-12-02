@@ -1,0 +1,60 @@
+;NHAN 2 SO (0 DEN 9)
+;author: Phi Thanh Danh - 1910914
+;date created: 11th November, 2020
+
+	.ORIG X3000
+
+;R3 dung de chuyen ky tu ascii sang so, R4 nguoc lai
+	LD R3, DECODE
+	LD R4, CODE
+
+;Nhap du lieu
+NHAP	LEA R0, USERINPUT1	;in ra "nhap so thu nhat"
+	PUTS
+	GETC
+	OUT
+	ADD R1, R0, R3	
+	LD R0, RETURN		;xuong dong
+	OUT
+
+	LEA R0, USERINPUT2	;in ra "nhap so thu hai"
+	PUTS
+	GETC
+	OUT
+	ADD R2, R0, R3
+	LD R0, RETURN		; xuong dong
+	OUT	
+	
+	LEA R0, OUTPUT		;in ra "tong hai so la"
+	PUTS
+
+;thuc hien phep nhan bang cach cong don R1 vao R0 (so lan cong la R2)
+	AND R0, R0, #0
+LOOP	ADD R0, R0, R1
+	ADD R2, R2, #-1
+	BRp LOOP
+
+;tach chu so hang chuc va hang don vi, R5 la hang chuc, R6 la hang don vi	
+	AND R5, R5, #0
+TRU10	ADD R0, R0, #-10
+	BRn XUAT
+	ADD R5, R5, #1
+	BRnzp TRU10
+	
+XUAT	ADD R6, R0, #10
+	ADD R0, R5, #0
+	BRz DON_VI		;hang chuc = 0 thi chi xuat hang don vi thoi
+	ADD R0, R0, R4		;in hang chuc (R5)
+	OUT	 	
+DON_VI	ADD R0, R6, R4		;in hang don vi (R6)
+	OUT
+
+	HALT
+
+RETURN	.FILL X0D
+DECODE	.FILL X-30
+CODE	.FILL X30
+USERINPUT1	.STRINGZ "NHAP SO THU NHAT: "
+USERINPUT2	.STRINGZ "NHAP SO THU HAI : "
+OUTPUT		.STRINGZ "TICH HAI SO LA  : "
+	.END

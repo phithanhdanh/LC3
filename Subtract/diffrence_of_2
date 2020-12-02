@@ -1,0 +1,52 @@
+;TRU 2 SO (0-9)
+;author: Phi Thanh Danh - 1910914
+;date created: 11th November, 2020
+
+	.ORIG X3000
+;chuyen ma asscii sang so va nguoc lai
+	LD R3, CODE
+	LD R4, DECODE
+;nhap du lieu
+	LEA R0, USERINPUT1
+	PUTS
+	GETC
+	OUT
+	ADD R1, R0, R4
+	LD R0, RETURN
+	OUT
+	
+	LEA R0, USERINPUT2
+	PUTS
+	GETC
+	OUT
+	ADD R2, R0, R4
+	LD R0, RETURN
+	OUT
+	
+	LEA R0, OUTPUT
+	PUTS
+
+;thuc hien phep tru
+	NOT R2, R2
+	ADD R2, R2, #1
+	ADD R5, R1, R2
+
+;xuat ket qua
+	BRzp DUONG		;neu ket qua duong thi in ra
+	LD R0, SIGN		;neu am thi in dau tru va lay bu2 ket qua
+	OUT
+	NOT R5, R5
+	ADD R5, R5, #1
+
+DUONG	ADD R0, R5, R3
+	OUT	
+	HALT
+
+CODE	.FILL X30
+DECODE	.FILL X-30
+RETURN	.FILL XD
+SIGN	.FILL X2D
+USERINPUT1	.STRINGZ "NHAP SO THU NHAT: "
+USERINPUT2	.STRINGZ "NHAP SO THU HAI : "
+OUTPUT		.STRINGZ "HIEU 2 SO LA    : "
+	.END

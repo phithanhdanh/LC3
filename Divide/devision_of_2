@@ -1,0 +1,63 @@
+;CHIA LAY PHAN NGUYEN (0-9)
+;author: Phi Thanh Danh - 1910914
+;date created: 11th November, 2020
+
+	.ORIG X3000
+
+;ma hoa va giai ma
+	LD R4, DECODE
+	LD R3, CODE
+
+;nhap du lieu
+NHAP	LEA R0, USERINPUT1	;nhap so chia
+	PUTS
+	GETC
+	OUT
+	ADD R1, R0, R4
+	LD R0, RETURN
+	OUT
+
+	LEA R0, USERINPUT2	;nhap so bi chia
+	PUTS
+	GETC
+	OUT
+	ADD R2, R0, R4
+	
+	BRnp KO_LOI		;so chia khac 0 thi thuc hien tiep..
+	LD R0, RETURN		;...bang 0 thi in thong bao va nhap lai
+	OUT
+	LEA R0, ERROR
+	PUTS
+	LD R0, RETURN
+	OUT
+	BRnzp NHAP
+	
+	
+KO_LOI	LD R0, RETURN		;xuong dong
+	OUT			
+	LEA R0, OUTPUT
+	PUTS
+
+;thuc hien chia lay phan nguyen bang cach lay so bi chia tru dan cho so chia
+	NOT R2, R2		;lay bu2 so bi chia
+	ADD R2, R2, #1
+
+	AND R5, R5, #0		;R5 la ket qua
+LOOP	ADD R1, R1, R2
+	BRn XUAT
+	ADD R5, R5, #1
+	BRnzp LOOP
+
+XUAT	ADD R0, R5, R3
+	OUT
+	
+	HALT
+
+CODE	.FILL X30
+DECODE	.FILL X-30
+RETURN		.FILL XD
+USERINPUT1	.STRINGZ "NHAP SO BI CHIA a = "
+USERINPUT2	.STRINGZ "NHAP SO CHIA    b = "
+OUTPUT		.STRINGZ "PHAN NGUYEN a / b = "
+ERROR		.STRINGZ "SO CHIA PHAI KHAC 0, VUI LONG NHAP LAI"
+	.END
